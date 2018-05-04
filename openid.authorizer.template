@@ -1,0 +1,35 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Transform": "AWS::Serverless-2016-10-31",
+    "Description": "API Gateway OpenId Authorizer",
+    "Parameters": {},
+    "Resources": {
+        "DefaultFunction": {
+            "Type": "AWS::Serverless::Function",
+            "Properties": {
+                "Handler": "Lambda.OpenId.Authorizer::Lambda.OpenId.Authorizer.Function::FunctionHandler",
+                "Runtime": "dotnetcore2.0",
+                "CodeUri": "s3://bickel-marketplace/AWSOpenIdAuthorizer1.0.0.zip",
+                "Description": "Default function",
+                "MemorySize": 256,
+                "Timeout": 30,
+                "Events": {
+                    "ProxyResource": {
+                        "Type": "Api",
+                        "Properties": {
+                            "Path": "/{proxy+}",
+                            "Method": "ANY"
+                        }
+                    }
+                },
+                "Environment":{
+                    "Variables":{
+                        "AUDIENCE":"project-name",
+                        "ISSUER": "https://securetoken.google.com/project-name",
+                        "OPENIDCONFIG": "https://securetoken.google.com/project-name/.well-known/openid-configuration"
+                    }
+                }
+            }
+        }
+    }
+}
