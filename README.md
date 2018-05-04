@@ -3,3 +3,8 @@
 2. Edit the lambda environment variables with your audience, issuer, and openidconnect endpoint
 
 ![Env variables](https://s3.eu-central-1.amazonaws.com/bickel-marketplace/Opera+Snapshot_2018-05-04_152221_console.aws.amazon.com.png)
+
+3. Create an Authorizer for your API Gateway that reference your Lamdba
+4. Precise which header to forward to the Lamdba as authorization token. Warning, this should be the full token, no "bearer ' prefix. 
+
+![Authorizer](https://s3.eu-central-1.amazonaws.com/bickel-marketplace/Opera+Snapshot_2018-05-04_152639_ap-southeast-1.console.aws.amazon.com.png)
