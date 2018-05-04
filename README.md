@@ -12,3 +12,5 @@
 5. Test the authorizer by passing a valid / and invalid bearer token. A valid token should return "Effect": "Allow" while an invalid token "Effect": "Deny"
 
 ![Valid token](https://s3.eu-central-1.amazonaws.com/bickel-marketplace/Opera+Snapshot_2018-05-04_153041_ap-southeast-1.console.aws.amazon.com.png)
+
+6. Apply the authorizer to the endpoints that require a valid token
