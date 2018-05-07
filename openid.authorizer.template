@@ -13,15 +13,6 @@
                 "Description": "Default function",
                 "MemorySize": 256,
                 "Timeout": 30,
-                "Events": {
-                    "ProxyResource": {
-                        "Type": "Api",
-                        "Properties": {
-                            "Path": "/{proxy+}",
-                            "Method": "ANY"
-                        }
-                    }
-                },
                 "Environment":{
                     "Variables":{
                         "AUDIENCE":"project-name",

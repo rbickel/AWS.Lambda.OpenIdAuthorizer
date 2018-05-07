@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Amazon.Lambda.APIGatewayEvents;
@@ -17,7 +18,7 @@ namespace Lambda.OpenId.Authorizer
 {
     public class Function
     {
-
+        public static readonly string IdClaim = Environment.GetEnvironmentVariable("IDCLAIM") ?? "email";
         public static readonly string Issuer = Environment.GetEnvironmentVariable("ISSUER");
         public static readonly string Audience = Environment.GetEnvironmentVariable("AUDIENCE");
         public static readonly string OpenIdConfig = Environment.GetEnvironmentVariable("OPENIDCONFIG");
@@ -56,7 +57,7 @@ namespace Lambda.OpenId.Authorizer
             }
 
         }
-        public virtual async Task<(bool, string)> CheckAuthorization(string token)
+        private async Task<(bool, string)> CheckAuthorization(string token)
         {
             var configuration = await _configurationManager.GetConfigurationAsync(CancellationToken.None);
             var validationParameters =
@@ -71,15 +72,14 @@ namespace Lambda.OpenId.Authorizer
             {
                 var user = new JwtSecurityTokenHandler().ValidateToken(token, validationParameters, out SecurityToken _);
 
-                return (true, user.Identity.Name);
+                return (user.Identity.IsAuthenticated, user.Claims.FirstOrDefault(c => c.Type == IdClaim)?.Value);
             }
             catch(Exception e)
             {
                 Console.WriteLine("Error authorizing request. " + e.Message);
-                return (false, string.Empty); ;
+                return (false, null); ;
             }
         }
-
     }
 }
 
