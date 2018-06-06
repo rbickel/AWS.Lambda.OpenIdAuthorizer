@@ -18,7 +18,7 @@ namespace Lambda.OpenId.Authorizer
 {
     public class Function
     {
-        public static readonly string IdClaim = Environment.GetEnvironmentVariable("IDCLAIM") ?? "email";
+        public static readonly string IdClaim = Environment.GetEnvironmentVariable("IDCLAIM") ?? "sub";
         public static readonly string Issuer = Environment.GetEnvironmentVariable("ISSUER");
         public static readonly string Audience = Environment.GetEnvironmentVariable("AUDIENCE");
         public static readonly string OpenIdConfig = Environment.GetEnvironmentVariable("OPENIDCONFIG");
@@ -29,7 +29,7 @@ namespace Lambda.OpenId.Authorizer
         {
             try
             {
-                (bool authorized, string username) = await CheckAuthorization(authEvent.AuthorizationToken);
+                (bool authorized, string username) = await Authorize(authEvent.AuthorizationToken);
 
                 return new APIGatewayCustomAuthorizerResponse
                 {
@@ -57,7 +57,7 @@ namespace Lambda.OpenId.Authorizer
             }
 
         }
-        private async Task<(bool, string)> CheckAuthorization(string token)
+        private async Task<(bool, string)> Authorize(string token)
         {
             var configuration = await _configurationManager.GetConfigurationAsync(CancellationToken.None);
             var validationParameters =
