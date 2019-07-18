@@ -8,7 +8,7 @@
             "Type": "AWS::Serverless::Function",
             "Properties": {
                 "Handler": "Lambda.OpenId.Authorizer::Lambda.OpenId.Authorizer.Function::FunctionHandler",
-                "Runtime": "dotnetcore2.0",
+                "Runtime": "dotnetcore2.1",
                 "CodeUri": "s3://bickel-marketplace/AWSOpenIdAuthorizer1.0.0.zip",
                 "Description": "Default function",
                 "MemorySize": 256,
